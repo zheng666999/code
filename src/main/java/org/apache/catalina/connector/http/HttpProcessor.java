@@ -358,6 +358,7 @@ final class HttpProcessor
     synchronized void assign(Socket socket) {
 
         // Wait for the Processor to get the previous Socket
+    	//此时线程在外部主线程内，等待的话，阻塞的是主线程，而且processor没有被保存，那不就丢失了么？
         while (available) {
             try {
                 wait();

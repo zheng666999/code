@@ -854,11 +854,11 @@ public final class HttpConnector
      * allowed processors have already been created and are in use, return
      * <code>null</code> instead.
      */
-    //这里是从processors队列里面弹出来一个processor，所以这就说明如果这里有个类似池的概念
+    //todo 这里是从processors队列里面弹出来一个processor，所以这就说明如果这里有个类似池的概念
     private HttpProcessor createProcessor() {
 
         synchronized (processors) {
-            if (processors.size() > 0) {
+            if (processors.size() > 0) { //有闲置的会直接pop，没有闲置就new
                 // if (debug >= 2)
                 // log("createProcessor: Reusing existing processor");
                 return ((HttpProcessor) processors.pop());
