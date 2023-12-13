@@ -200,7 +200,7 @@ public final class Bootstrap {
             paramValues[0] = args;
             method =
                 startupInstance.getClass().getMethod(methodName, paramTypes);
-            method.invoke(startupInstance, paramValues);
+            method.invoke(startupInstance, paramValues);  //todo 调用Catalina的process方法
 
         } catch (Exception e) {
             System.out.println("Exception during startup processing");

@@ -359,6 +359,7 @@ final class HttpProcessor
 
         // Wait for the Processor to get the previous Socket
     	//此时线程在外部主线程内，等待的话，阻塞的是主线程，而且processor没有被保存，那不就丢失了么？
+    	//阻塞的确实主线程，但是每个processor处理结束会被回收，就是回到Connector的栈里，下次会被调用起来（一种池化思想）
         while (available) {
             try {
                 wait();
