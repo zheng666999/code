@@ -637,6 +637,7 @@ public final class StandardWrapper
      *  an exception
      * @exception ServletException if a loading error occurs
      */
+    //todo  根据singleThreadModel返回servlet，如果不属于这种模式直接分配一个新的，如果属于这种模式，从实例池里面获取
     public Servlet allocate() throws ServletException {
 
         if (debug >= 1)
@@ -820,6 +821,9 @@ public final class StandardWrapper
      * load servlets that are marked in the deployment descriptor to be loaded
      * at server startup time.
      */
+    
+    //todo 首先根据不同判断使用什么类加载器，这里jsp的先不管
+    //todo 使用类加载器加载servlet，如果该servlet属于singleThreadModel，就会根据instancePool是否存在，建立instancePool
     public synchronized Servlet loadServlet() throws ServletException {
 
         // Nothing to do if we already have an instance or an instance pool
