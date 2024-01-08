@@ -451,7 +451,7 @@ public class SimpleWrapper implements Wrapper,Lifecycle{
 		// TODO Auto-generated method stub
 		System.out.println("Stopping wrapper "+name);
 		try {
-			instance.detroy();
+			instance.destroy();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e);

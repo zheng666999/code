@@ -1,0 +1,6 @@
+javac -cp .\src\main\java;.\javax.servlet-api-3.0.1.jar -nowarn .\src\main\java\customTomcat\*.java  -d .\out 
+
+
+javac -cp .\src\main\java;.\javax.servlet-api-3.0.1.jar -nowarn .\src\main\java\customTomcat\*.java .\src\main\java\*\*.java -d .\out 
+
+java -cp .\javax.servlet-api-3.0.1.jar  .\src\main\java\customTomcat\Bootstrap.java
