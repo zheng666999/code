@@ -19,6 +19,8 @@ import org.apache.catalina.ValveContext;
 public class SimpleWrapperValve implements Valve,Contained{
 
 	Container container;
+	
+	public SimpleWrapperValve() {}
 	@Override
 	public String getInfo() {
 		// TODO Auto-generated method stub

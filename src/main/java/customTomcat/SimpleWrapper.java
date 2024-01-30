@@ -26,12 +26,13 @@ import org.apache.catalina.Realm;
 import org.apache.catalina.Request;
 import org.apache.catalina.Response;
 import org.apache.catalina.Wrapper;
+import org.apache.catalina.core.ContainerBase;
 import org.apache.catalina.util.LifecycleSupport;
 
 /**
  * wrapper的实现类
  */
-public class SimpleWrapper implements Wrapper,Lifecycle{
+public class SimpleWrapper extends ContainerBase implements Wrapper,Lifecycle{
 	private Loader loader;
 	protected Container parent= null;
 	boolean started = false;

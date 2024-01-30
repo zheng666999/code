@@ -28,6 +28,9 @@ public final class Bootstrap {
     	try {
     		connector.initialize();
     		connector.start();
+    		Thread.sleep(10000);
+    		System.out.println("准备结束");
+    		connector.stop();
     		System.in.read();
     	}catch(Exception e) {
     		e.printStackTrace();
