@@ -25,3 +25,8 @@ context -> contextValve -> wrapper -> wrapperValve ->servlet
 
 
 pipeline与valve： 一个pipelineLine可以有多个valve，contextValve是context的基本valve
+
+wrapper没有子容器，属于context的子容器
+wrapper是pipeline，valve会进行拦截，加载servlet的原理是什么？
+
+
