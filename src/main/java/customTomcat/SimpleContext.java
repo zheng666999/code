@@ -23,6 +23,7 @@ import org.apache.catalina.Realm;
 import org.apache.catalina.Request;
 import org.apache.catalina.Response;
 import org.apache.catalina.Wrapper;
+import org.apache.catalina.core.ContainerBase;
 import org.apache.catalina.deploy.ApplicationParameter;
 import org.apache.catalina.deploy.ContextEjb;
 import org.apache.catalina.deploy.ContextEnvironment;
@@ -38,7 +39,7 @@ import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.util.CharsetMapper;
 import org.apache.catalina.util.LifecycleSupport;
 
-public class SimpleContext implements Context,Lifecycle{
+public class SimpleContext extends ContainerBase implements Context,Lifecycle{
 
 	protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 	
@@ -243,7 +244,7 @@ public class SimpleContext implements Context,Lifecycle{
 	@Override
 	public void addChild(Container child) {
 		// TODO Auto-generated method stub
-		
+		super.addChild(child);
 	}
 
 	@Override
@@ -273,7 +274,7 @@ public class SimpleContext implements Context,Lifecycle{
 	@Override
 	public Container[] findChildren() {
 		// TODO Auto-generated method stub
-		return null;
+		return super.findChildren();
 	}
 
 	@Override

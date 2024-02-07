@@ -207,6 +207,7 @@ final class ApplicationFilterChain implements FilterChain {
               (ApplicationFilterConfig) iterator.next();
             Filter filter = null;
             try {
+            	//反射新建（不是单例的）
                 filter = filterConfig.getFilter();
                 support.fireInstanceEvent(InstanceEvent.BEFORE_FILTER_EVENT,
                                           filter, request, response);

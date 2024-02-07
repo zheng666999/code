@@ -15,11 +15,13 @@ public final class Bootstrap {
     	HttpConnector connector = new HttpConnector();
     	Wrapper wrapper = new SimpleWrapper();
     	wrapper.setServletClass("ModernServlet");
+    	
     	Loader loader = new SimpleLoader();
+    	
     	Valve valve1= new HeaderLoggerValve();
     	Valve valve2 =new ClientIPLoggerValve();
-    	wrapper.setLoader(loader);
     	
+    	wrapper.setLoader(loader);
     	((Pipeline)wrapper).addValve(valve1);
     	((Pipeline)wrapper).addValve(valve2);
     	

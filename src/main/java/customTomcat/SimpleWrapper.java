@@ -37,7 +37,9 @@ public class SimpleWrapper extends ContainerBase implements Wrapper,Lifecycle{
 	protected Container parent= null;
 	boolean started = false;
 	LifecycleSupport lifecycle = new LifecycleSupport(this);
-	String name = null;
+//	String name = null; 父类有这个属性，标注容器名称，这里没必要再次创建设置
+    private String servletClass = null;
+
 	
 	public Loader getLoader() {
 		if(loader != null) {
@@ -102,17 +104,17 @@ public class SimpleWrapper extends ContainerBase implements Wrapper,Lifecycle{
 		
 	}
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		this.name = name;
-	}
+//	@Override
+//	public String getName() {
+//		// TODO Auto-generated method stub
+//		return name;
+//	}
+//
+//	@Override
+//	public void setName(String name) {
+//		// TODO Auto-generated method stub
+//		this.name = name;
+//	}
 
 	@Override
 	public Container getParent() {
@@ -303,12 +305,13 @@ public class SimpleWrapper extends ContainerBase implements Wrapper,Lifecycle{
 	@Override
 	public String getServletClass() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.servletClass;
 	}
 
 	@Override
 	public void setServletClass(String servletClass) {
 		// TODO Auto-generated method stub
+		this.servletClass = servletClass;
 		
 	}
 

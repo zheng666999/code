@@ -3478,6 +3478,7 @@ public class StandardContext
                 }
 
                 // Start our child containers, if any
+                //启动子容器，wrapper的启动在这里
                 Container children[] = findChildren();
                 for (int i = 0; i < children.length; i++) {
                     if (children[i] instanceof Lifecycle)

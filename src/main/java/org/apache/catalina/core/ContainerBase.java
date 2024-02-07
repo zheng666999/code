@@ -818,6 +818,7 @@ public abstract class ContainerBase
             child.setParent((Container) this);  // May throw IAE
             if (started && (child instanceof Lifecycle)) {
                 try {
+                	//todo 项目启动子容器
                     ((Lifecycle) child).start();
                 } catch (LifecycleException e) {
                     log("ContainerBase.addChild: start: ", e);

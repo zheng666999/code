@@ -39,6 +39,7 @@ public class ClientIPLoggerValve implements Valve , Contained{
 
 	@Override
 	public void invoke(Request request, Response response, ValveContext context) throws IOException, ServletException {
+		// invokeNext
 		context.invokeNext(request, response);
 		System.out.println("client ip logger valve");
 		ServletRequest sRequest = request.getRequest();
