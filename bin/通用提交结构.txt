@@ -1,0 +1,16 @@
+
+beforeSave
+
+save
+
+afterSave
+	enqueue
+	
+	
+	
+job enqueue 补偿任务
+
+
+
+异步处理：
+	
