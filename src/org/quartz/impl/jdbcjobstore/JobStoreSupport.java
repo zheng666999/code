@@ -3245,6 +3245,7 @@ public abstract class JobStoreSupport implements JobStore, Constants {
             // Before we make the potentially expensive call to acquire the 
             // trigger lock, peek ahead to see if it is likely we would find
             // misfired triggers requiring recovery.
+            //todo 这里查询的是waiting状态的结果，那么那种已经从waiting——》acquire状态的数据怎么办？
             int misfireCount = (getDoubleCheckLockMisfireHandler()) ?
                 getDelegate().countMisfiredTriggersInState(
                     conn, STATE_WAITING, getMisfireTime()) : 
@@ -3254,11 +3255,13 @@ public abstract class JobStoreSupport implements JobStore, Constants {
                 getLog().debug(
                     "Found 0 triggers that missed their scheduled fire-time.");
             } else {
+            	// 加锁，锁的是什么？
                 transOwner = getLockHandler().obtainLock(conn, LOCK_TRIGGER_ACCESS);
                 
                 result = recoverMisfiredJobs(conn, false);
             }
             
+            //这里提交事务，那么数据库就会一直持有锁到这个点
             commitConnection(conn);
             return result;
         } catch (JobPersistenceException e) {
@@ -4000,6 +4003,7 @@ public abstract class JobStoreSupport implements JobStore, Constants {
             this.interrupt();
         }
 
+        //todo 查询错过触发的任务数量 getProcessedMisfiredTriggerCount()
         private RecoverMisfiredJobsResult manage() {
             try {
                 getLog().debug("MisfireHandler: scanning for misfires...");

@@ -88,8 +88,8 @@ public interface StdJDBCConstants extends Constants {
         + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST + " AND NOT ("
         + COL_MISFIRE_INSTRUCTION + " = " + Trigger.MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY + ") AND " 
         + COL_NEXT_FIRE_TIME + " < ? " 
+        
         + "AND " + COL_TRIGGER_STATE + " = ?";
-    
     String SELECT_HAS_MISFIRED_TRIGGERS_IN_STATE = "SELECT "
         + COL_TRIGGER_NAME + ", " + COL_TRIGGER_GROUP + " FROM "
         + TABLE_PREFIX_SUBST + TABLE_TRIGGERS + " WHERE "
