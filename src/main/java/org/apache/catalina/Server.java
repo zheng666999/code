@@ -161,6 +161,8 @@ public interface Server {
 
     /**
      * Wait until a proper shutdown command is received, then return.
+     * 
+     * 监听一个端口，等待关闭server，默认端口是8005，查看standardServer实现类结果
      */
     public void await();
 

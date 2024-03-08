@@ -30,3 +30,17 @@ wrapper没有子容器，属于context的子容器
 wrapper是pipeline，valve会进行拦截，加载servlet的原理是什么？
 
 
+ComboPooledDataSource
+		管理池化连接方式：？
+		
+		object wait  notiifyAll  控制流程的启动和唤醒
+			   interrupt
+			   join
+			   
+
+quartz 数据操作类继承关系
+       恢复、重试机制	
+       		   
+
+sychronized final 对象
+

@@ -646,6 +646,7 @@ public final class StandardServer
             }
             int k = 0;
             Service results[] = new Service[services.length - 1];
+            //todo 添加的时候是直接在末尾添加，所以使用了native方法，当时删除是随机删除，这里无法使用无脑的复制
             for (int i = 0; i < services.length; i++) {
                 if (i != j)
                     results[k++] = services[i];
