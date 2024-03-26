@@ -1,0 +1,11 @@
+channel 机制：
+	通道号 与  tcp连接的端口号 用的一个么？  应该不是一个，好像可以在一个ssh连接上面建立多个channel。
+	
+报文格式：
+	ssh_msg_channel_open
+	channel type
+	sender channel
+	initial window size
+	maxinum package size
+	
+	
