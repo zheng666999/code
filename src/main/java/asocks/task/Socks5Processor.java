@@ -25,79 +25,104 @@ import asocks.GlobalCacheInfo;
  */
 public class Socks5Processor implements ProcessTask{
 
-	private GlobalCacheInfo globalCacheInfo  ;
+	private GlobalCacheInfo globalCacheInfo  ; //包含testSocket引用
+	private Socket localSocket;
 	
-	public Socks5Processor(GlobalCacheInfo globalCacheInfo) {
+	public Socks5Processor(GlobalCacheInfo globalCacheInfo,Socket localSocket) {
 		this.globalCacheInfo = globalCacheInfo;
+		this.localSocket = localSocket;
 	}
 	@Override
 	public void run() {
-		
-		
+		try {
+			this.process();
+		}catch (Exception e) {
+			System.out.println("error:"+CommonUtils.getErrorMsg(e));
+		}finally {
+			globalCacheInfo = null;
+			try {
+				localSocket.close();
+			} catch (IOException e) {
+				System.out.println("error:"+CommonUtils.getErrorMsg(e));
+			}
+		}
 	}
 	
-	public void process(Socket localSocket)  {
+	//顺序处理,协商、连接、认证
+	public void process() throws IOException  {
 		
-		InetAddress inetAddress = localSocket.getLocalAddress();
+		handleAuthenticationRequest();
 		
-		//本地socket的ip、port信息
-		String localHost = inetAddress.getHostName();
+		Socket testSocket = handleConnectionRequest();
 		
-		Integer port = localSocket.getLocalPort();
-		
-		//从socket读取数据流
+		handleTransferRequest(testSocket);
+	}
+	
+	private void handleAuthenticationRequest() throws IOException {
 		byte[] readDataFromLocal = CommonUtils.readFromSocket(localSocket);
-		
+
 		if(readDataFromLocal == null || readDataFromLocal.length == 0) {
 			throw new CustomException(ErrorConstant.READ_DATA_ERROR_STRING);
 		}
 		
-		//判断协议、是否是协商、建立请求、正常数据流
+		//判断协议、是否是协商、建立请求、正常数据流,用长度判断是不合理的
 		/**request 格式
 		 * ver  nmethods methods
+		 * 后面两个参数是否需要gua
 		 */
 		byte ver = readDataFromLocal[0];
 		
-		if(ver != 0x05) {
-			throw new CustomException(ErrorConstant.SOCKS5_VERSION_ERROR_STRING);
-		}
-		
-		if(readDataFromLocal.length == 4) {
-			//authentication
-			handleAuthenticationRequest(readDataFromLocal,localSocket);
-		}else if(readDataFromLocal.length <= 22) {
-			//connect
-			handleConnectionRequest(readDataFromLocal,localSocket);
-		}else {
-			//transfer data
-			handleTransferRequest(readDataFromLocal,localSocket);
-		}
-		
-		
-	}
-	
-	private void handleAuthenticationRequest(byte[] readDataFromLocal , Socket socket) throws IOException {
 		/** reply格式
 		 * ver   method
 		 * 1       1
 		 */
-		byte[] response = new byte[2];
-		response[0] = 0x05;
-		response[1] = 0x00;
-		CommonUtils.writeToSocket(socket, response);
+		if(ver != 0x05) {
+			CommonUtils.writeToSocket(localSocket, new byte[] {0x05,-1});
+		}
+		
+		byte NMETHODS = readDataFromLocal[1];
+		Integer nmethodsInteger =  NMETHODS&0xFF;
+		for(int i = 0 ; i<nmethodsInteger ; i++) {
+			switch (readDataFromLocal[2+i]&0xFF) {
+				case 0x00:
+					System.out.println("method is "+"NO AUTHENTICATION REQUIRED");
+					break;
+				case 0x01:
+					System.out.println("method is "+"GSSAPI");
+					break;
+				case 0x02:
+					System.out.println("method is "+"USERNAME/PASSWORD");
+					break;
+				case 0x03:
+					System.out.println("method is "+"to X'7F' IANA ASSIGNED");
+					break;
+				case 0x80:
+					System.out.println("method is "+"to X'FE' RESERVED FOR PRIVATE METHODS");
+					break;
+				case 0xFF:
+					System.out.println("method is "+"NO ACCEPTABLE METHODS");
+					break;
+				default:
+					//default is end
+					CommonUtils.writeToSocket(localSocket, new byte[] {0x05,-1});
+					break;
+			}
+		}
+		CommonUtils.writeToSocket(localSocket, new byte[] {0x05,0x00});
 	}
 	
-	private void handleConnectionRequest(byte[] readDataFromLocal, Socket socket) throws  IOException {
+	private Socket handleConnectionRequest() throws  IOException {
+		byte[] readDataFromLocal = CommonUtils.readFromSocket(localSocket);
 		int length = readDataFromLocal.length;
 		/**request格式
 		 * ver   cmd   rsv  atyp  dst.addr  dst.port
-		 *  1     1     1     1     4-16       2
+		 *  1     1     1     1     4/16       2
 		 */
 		byte cmd = readDataFromLocal[1];
 		byte rsv = readDataFromLocal[2];
 		byte atyp = readDataFromLocal[3];
-		byte[] dstAddr = Arrays.copyOfRange(readDataFromLocal, 4, length-2);;//readDataFromLocal[4] ... readDataFromLocal[length-2]
-		byte[] dstPort = Arrays.copyOfRange(readDataFromLocal, length-2, length);;//readDataFromLocal[length-2] ... readDataFromLocal[length-1]
+		byte[] dstAddr = Arrays.copyOfRange(readDataFromLocal, 4, length-2);//readDataFromLocal[4] ... readDataFromLocal[length-2]
+		byte[] dstPort = Arrays.copyOfRange(readDataFromLocal, length-2, length);//readDataFromLocal[length-2] ... readDataFromLocal[length-1]
 		if(atyp == 0x01) {
 			// 4 bytes , check ipv4
 		}
@@ -108,22 +133,37 @@ public class Socks5Processor implements ProcessTask{
 		String address = new String(dstAddr,StandardCharsets.UTF_8); 
 		String port = new String(dstPort,StandardCharsets.UTF_8); 
 		
-		//todo 建立连接
-		Socket testSocket = getTestSocket(address,port);
+		byte[] response ;
+		Socket testSocket;
+		//todo 建立连接,可以考虑是否在这里处理
+		try {
+		     testSocket = getTestSocket(address,port);
+		}catch (Exception e) {
+			response = new byte[] {0x05,0x01,0x00,1,0,0,0,0,0,0};
+			CommonUtils.writeToSocket(localSocket, response);
+			throw new CustomException(CommonUtils.getErrorMsg(e));
+		}
 		
 		//建立请求 
 		/**reply格式
 		 * ver   rep   rsv  atyp  bind.addr bind.port
 		 * 
 		 */
-		byte[] response = new byte[1];
-		//todo 返回本地
-		CommonUtils.writeToSocket(socket, response);
+		//后面两个暂时不管
+		response = new byte[] {0x05,0x00,0x00,atyp,0,0,0,0,0,0};
+		CommonUtils.writeToSocket(localSocket, response);
+		
+		return testSocket;
 		
 	}
 	
-	private void handleTransferRequest(byte[] readDataFromLocal, Socket socket) {
-		
+	//转发数据
+	//可以考虑启动线程
+	private void handleTransferRequest(Socket dstSocket) throws IOException {	
+		byte[] readDataFromLocal = CommonUtils.readFromSocket(localSocket);
+		CommonUtils.writeToSocket(dstSocket, readDataFromLocal);
+		byte[] remoteData =  CommonUtils.readFromSocket(dstSocket);
+		CommonUtils.writeToSocket(localSocket, remoteData);
 	}
 	
 	private Socket getTestSocket(String address,String port) throws  IOException {
@@ -136,7 +176,4 @@ public class Socks5Processor implements ProcessTask{
 		return testSocket;
 	}
 	
-	
-	
-
 }

@@ -15,7 +15,7 @@ import asocks.task.Socks5Processor;
 public class SocketPoller implements PollerTask , ComponentLifeCycle{
 	
 	private volatile boolean isRunning = true;
-	private BlockingQueue<Socket> queue = null;  // 服务器接收的socket都会在这里排队
+	private CommonQueue<Socket> queue = null;  // 服务器接收的socket都会在这里排队
 	private final Object lockObject = new Object();
 	private final Object signalObject = new Object();
 	private GlobalCacheInfo globalCacheInfo  ;
@@ -23,7 +23,7 @@ public class SocketPoller implements PollerTask , ComponentLifeCycle{
 	
 	
 	
-	public SocketPoller(BlockingQueue<Socket> queue) {
+	public SocketPoller(CommonQueue<Socket> queue) {
 		this.queue = queue;
 		globalCacheInfo = new GlobalCacheInfo();
 		executor = new ThreadPoolExecutor(4, 8, 600, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(600));
@@ -49,7 +49,7 @@ public class SocketPoller implements PollerTask , ComponentLifeCycle{
 				}
 				//todo 找到对应的处理器，首先第一步必须要解析出来输入流数据
 				//socks5处理
-				Socks5Processor processor = new Socks5Processor(globalCacheInfo);
+				Socks5Processor processor = new Socks5Processor(globalCacheInfo,oneObj);
 				executor.submit(processor);
 			} catch (Exception e) {
 				System.out.println("poll data error , "+e);
