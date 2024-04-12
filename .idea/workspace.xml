@@ -13,6 +13,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -41,7 +42,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Desktop/share/nettyProject/src/main/java/第6章",
+    "last_opened_file_path": "C:/Users/Administrator/Desktop/share/nettyProject/src/main/java/第11章",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.20782852",
@@ -50,16 +51,20 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\share\nettyProject\src\main\java\第11章" />
       <recent name="C:\Users\Administrator\Desktop\share\nettyProject\src\main\java\第6章" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="第11章" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.NettyClient">
-    <configuration name="第6章.NettyServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="第6章.NettyServer" />
+  <component name="RunManager" selected="Application.第11章.NettyServer">
+    <configuration name="第11章.NettyClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="第11章.NettyClient" />
       <module name="nettyProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="第6章.*" />
+          <option name="PATTERN" value="第11章.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -67,12 +72,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NettyClient (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="第6章.NettyClient" />
+    <configuration name="第11章.NettyServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="第11章.NettyServer" />
       <module name="nettyProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="第6章.*" />
+          <option name="PATTERN" value="第11章.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -80,15 +85,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NettyClient (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="第6章.NettyClient" />
+    <configuration name="NettyClient (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="NettyClient" />
       <module name="nettyProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="第6章.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -121,11 +120,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.第11章.NettyServer" />
+        <item itemvalue="Application.第11章.NettyClient" />
+        <item itemvalue="Application.NettyClient (1)" />
         <item itemvalue="Application.NettyClient" />
         <item itemvalue="Application.NettyServer" />
-        <item itemvalue="Application.NettyClient (3)" />
-        <item itemvalue="Application.NettyClient (2)" />
-        <item itemvalue="Application.第6章.NettyServer" />
       </list>
     </recent_temporary>
   </component>
