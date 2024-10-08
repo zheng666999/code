@@ -9,7 +9,7 @@ int main(void){
         return INTERROR;
     }
     int start = 0;
-    int status = createBitTree(tree,arr,size,start);
+    int status = createBitTree(&tree,arr,size,start);
     if(status == INTERROR){
         printf("create bit tree error");
         return INTERROR;
