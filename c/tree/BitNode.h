@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-typedef struct{
+typedef struct BitNode{
     int data;
     struct BitNode *lChild,*rChild;
 }BitNode;
